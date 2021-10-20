@@ -4,7 +4,7 @@ class splat {
         // Initial coords wrt to screen
         this.xCoord = 0.0;
         this.yCoord = 0.0;
-        this.size = Constants.size;
+        this.size = Constants.SPLAT_RADIUS;
         // need colour?
 
         // Origin (0,0) of canvas is bottom left
