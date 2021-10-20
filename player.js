@@ -15,6 +15,8 @@ class Player {
 
     update(splat_confirmation, dt, splat_fired) {
 
+        // Player has to be able to fire again after cooldown
+
         // Add a point
         if (splat_confirmation) {
             this.score += 1;

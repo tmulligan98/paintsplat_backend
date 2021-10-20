@@ -46,7 +46,8 @@ class canvas {
 
     }
 
-    updateSplat(splat) {
+    // Given a new splat, check if the new splat is valid
+    validSplat(splat) {
         let a = 0.0
         let b = 0.0
         for (spl in this.splats) {
@@ -104,6 +105,8 @@ class canvas {
     }
 
    
+
+    // Need a method for controlling the motion of the canvas. 
 
 }
 module.exports = canvas;

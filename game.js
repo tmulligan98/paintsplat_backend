@@ -25,7 +25,6 @@ class Game {
     // Get time from last update
     // Handle user inputs. Maybe have a queue of player instructions to issue? LIFO kinda thing
     // Update: (Update every other time? 30 ticks per second is okay)
-    // each player
     // Update the board.
     // Update splats.
 
