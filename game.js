@@ -13,6 +13,9 @@ class Game {
         this.shouldSendUpdate = false;
         setInterval(this.update.bind(this), 1000 / 60);
     }
+    // Socket inputs shouldnt be handled here
+    // We should only call functions, and send updates (via socket.emit) here
+    // I think this is too complicated
     // Multiplayer
     startMultiPlayer() {
         gameMode = 'multiPlayer'
@@ -24,6 +27,7 @@ class Game {
         let ready = false
         let enemyReady = false
 
+        // Is this not done in server.js?
         // Get your player number
         socket.on('player-number', num => {
             if (num === -1) {
@@ -41,12 +45,14 @@ class Game {
             }
         })
 
+        // Handle in server.js. Call game class from there
         // Another player has connected or disconnected
         socket.on('player-connection', num => {
             console.log(`Player number ${num} has connected or disconnected`)
             playerConnectedOrDisconnected(num)
         })
 
+        // Server.js again
         // On enemy ready
         socket.on('enemy-ready', num => {
             enemyReady = true
@@ -56,6 +62,8 @@ class Game {
             }
         })
 
+
+        // server.js
         // Check player status
         socket.on('check-players', players => {
             players.forEach((p, i) => {
@@ -67,11 +75,14 @@ class Game {
             })
         })
 
+
+        // Not sure if we need this right now.
         // On Timeout
         socket.on('timeout', () => {
             console.log('You have reached the 10 minute limit')
         })
 
+        // Server stuff
         function playerConnectedOrDisconnected(num) {
             let player = `.p${parseInt(num) + 1}`
 
@@ -92,20 +103,20 @@ class Game {
     }
 }
 
-    // addPlayer
+// addPlayer
 
-    // removePlayer
+// removePlayer
 
-    // handleInput
+// handleInput
 
-    // update
-    // Needs to:
-    // Get time from last update
-    // Handle user inputs. Maybe have a queue of player instructions to issue? LIFO kinda thing
-    // Update: (Update every other time? 30 ticks per second is okay)
-    // each player
-    // Update the board.
-    // Update splats.
+// update
+// Needs to:
+// Get time from last update
+// Handle user inputs. Maybe have a queue of player instructions to issue? LIFO kinda thing
+// Update: (Update every other time? 30 ticks per second is okay)
+// each player
+// Update the board.
+// Update splats.
 
 
 module.exports = Game;
