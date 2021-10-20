@@ -1,45 +1,83 @@
-// Load required libraries
-const express = require("express");
-const webpack = require("webpack");
-const socketio = require("socket.io");
-const webpackDevMiddleware = require("webpack-dev-middleware");
+const express = require('express')
+const path = require('path')
+const http = require('http')
+const PORT = process.env.PORT || 3000
+const socketio = require('socket.io')
+const app = express()
+const server = http.createServer(app)
+const io = socketio(server)
 
+// Set static folder
+app.use(express.static(path.join(__dirname, "public")))
 
-// Set up our express server
-const app = express();
-// We're serving static content
-app.use(express.static("public"))
+// Start server
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
+// Handle a socket connection request from web client
+// currently handles 2 playes. Can be amended as per the requirements for the game
+const connections = [null, null]
 
-// Dev environment stuff
-// ...
-//
+io.on('connection', socket => {
+    // console.log('New WS Connection')
 
-// Listen on port...
-//const port = process.env.PORT || 3000
-const port = 3000
-const server = app.listen(port);
-console.log(`Listening on port ${port}`);
+    // Find an available player number
+    let playerIndex = -1;
+    for (const i in connections) {
+        if (connections[i] === null) {
+            playerIndex = i
+            break
+        }
+    }
 
-// Get our socket.io going
-const io = socketio(server);
+    // Tell the connecting client what player number they are
+    socket.emit('player-number', playerIndex)
 
+    console.log(`Player ${playerIndex} has connected with id ${socket.id}`)
 
-// Listen for connections...
-io.on("connection", socket => {
-    console.log(`Player ${socket.id}`);
-    // socket.on(Constants.MSG_TYPES.CREATE_GAME, createGame);
-    // socket.on(Constants.MSG_TYPES.JOIN_GAME, joinGame);
-    // socket.on(Constants.MSG_TYPES.INPUT, handleInput);
-    // socket.on('disconnect', onDisconnect);
+    // Ignore player 3 for now
+    if (playerIndex === -1) return
+
+    connections[playerIndex] = false
+
+    // Tell eveyone what player number just connected
+    socket.broadcast.emit('player-connection', playerIndex)
+
+    // Handle Diconnect
+    socket.on('disconnect', () => {
+        console.log(`Player ${playerIndex} disconnected with id ${socket.id}`)
+        connections[playerIndex] = null
+        //Tell everyone what player number just disconnected
+        socket.broadcast.emit('player-connection', playerIndex)
+    })
+
+    // On Ready
+    socket.on('player-ready', () => {
+        socket.broadcast.emit('enemy-ready', playerIndex)
+        connections[playerIndex] = true
+    })
+
+    // Check player connections
+    socket.on('check-players', () => {
+        const players = []
+        for (const i in connections) {
+            connections[i] === null ? players.push({ connected: false, ready: false }) : players.push({ connected: true, ready: connections[i] })
+        }
+        socket.emit('check-players', players)
+    })
+
+    // Timeout connection
+    setTimeout(() => {
+        connections[playerIndex] = null
+        socket.emit('timeout')
+        socket.disconnect()
+    }, 300000) //  Time limit per player needs to be set.Currently set to 5minutes
 })
+
 
 // Functions to be carried out...
 
 // Setup a new game
 
 // Handle user inputs
-
-// Disconnect players
 
 // Join a game
