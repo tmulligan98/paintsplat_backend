@@ -2,12 +2,12 @@ const Constants = require('./constants');
 
 class Player {
 
-    constructor(id, username, initial_x, initial_y) {
+    constructor(id, username) {
         this.username = username;
         this.id = id;
         this.score = 0;
-        this.initial_x = initial_x;
-        this.initial_y = initial_y;
+        this.initial_x = 0.0;
+        this.initial_y = 0.0;
         this.fireCooldown = 0;
 
     }

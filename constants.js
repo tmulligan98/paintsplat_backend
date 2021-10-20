@@ -10,6 +10,11 @@ module.exports = Object.freeze({
     CANVAS_HEIGHT: 80,
     CANVAS_WIDTH: 80,
     MAX_ACCELERATION: 3,
-    MAX_SPEED: 20
+    MAX_SPEED: 20,
+    LOBBY_ID_SIZE: 6,
+    MAX_PLAYER: 2,
+    MSG_TYPES: {
+        DENY_ENTRY: "no_entry"
+    }
 
 });
