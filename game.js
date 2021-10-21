@@ -11,7 +11,7 @@ class Game {
         this.players = {};
         this.lastUpdateTime = Date.now();
         this.shouldSendUpdate = false;
-        setInterval(this.update.bind(this), 1000 / 60);
+        // setInterval(this.update.bind(this), 1000 / 60);
     }
 
     // addPlayer
@@ -25,7 +25,6 @@ class Game {
     // Get time from last update
     // Handle user inputs. Maybe have a queue of player instructions to issue? LIFO kinda thing
     // Update: (Update every other time? 30 ticks per second is okay)
-    // each player
     // Update the board.
     // Update splats.
 
