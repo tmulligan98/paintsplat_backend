@@ -15,7 +15,7 @@ function makeId() {
     let result = "";
     let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for (const i = 0; i < Constants.LOBBY_ID_SIZE; i++) {
+    for (let i = 0; i < Constants.LOBBY_ID_SIZE; i++) {
         result += alphabet.charAt(Math.floor.apply(Math.random() * alphabet.length))
     }
 
@@ -25,27 +25,32 @@ function makeId() {
 
 
 class Lobby {
-
-    constructor(socket, hostUsername) {
-        this.lobbyId = makeId()
+    constructor() {
+        this.lobbyId = "";
         this.playerCount = 0;
         this.players = {};
-        this.game = new Game;
+        this.game = new Game();
         this.sockets = {};
+        this.hostId = "";
+        this.playerUsernames = [];
+
+        //
+        this.lobbyId = makeId();
+    }
+
+    addHost(socket, username) {
         this.hostId = socket.id;
-        this.playerUsernames = []
-        // Add host socket
-        this.addPlayer(socket, hostUsername);
+        this.addPlayer(socket, username);
     }
 
     // TODO: Given a playerId, drop a player from the game.
     dropPlayer(playerId) {
+        // Get the player username
+        const uName = this.players[playerId].username;
         this.playerCount -= 1;
         delete this.players[playerId];
         delete this.sockets[playerId];
 
-        // Get the player username
-        uName = this.players[playerId].username;
         // Remove the player
         for (var i = 0; i < this.playerUsernames.length; i++) {
             if (this.playerUsernames[i] === uName) {
@@ -54,11 +59,12 @@ class Lobby {
             }
 
         }
+        return uName
     }
 
     // Given a player object, add that player
     addPlayer(socket, username) {
-        this.sockets[this.sockets.id] = socket;
+        this.sockets[socket.id] = socket;
         this.playerCount += 1;
         this.players[socket.id] = new Player(socket.id, username);
         // Tell player who is already in game
@@ -84,4 +90,4 @@ class Lobby {
 
 
 }
-
+module.exports = Lobby;

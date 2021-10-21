@@ -1,53 +1,36 @@
-// Import net module.
-const socketio = require("socket.io-client");
-
-const socket = socketio.connect("http://localhost:3000");
-socket.emit("Yo")
-
-// const port = process.env.PORT || 3000
-// // This function create and return a net.Socket object to represent TCP client.
-// function getConn(connName) {
-
-//     var option = {
-//         host: 'localhost',
-//         port: 3000
-//     }
-
-//     // Create TCP client.
-//     var client = net.createConnection(option, function () {
-//         console.log('Connection name : ' + connName);
-//         console.log('Connection local address : ' + client.localAddress + ":" + client.localPort);
-//         console.log('Connection remote address : ' + client.remoteAddress + ":" + client.remotePort);
-//     });
-
-//     client.setTimeout(1000);
-//     client.setEncoding('utf8');
-
-//     // When receive server send back data.
-//     client.on('data', function (data) {
-//         console.log('Server return data : ' + data);
-//     });
-
-//     // When connection disconnected.
-//     client.on('end', function () {
-//         console.log('Client socket disconnect. ');
-//     });
-
-//     client.on('timeout', function () {
-//         console.log('Client connection timeout. ');
-//     });
-
-//     client.on('error', function (err) {
-//         console.error(JSON.stringify(err));
-//     });
-
-//     return client;
+// MSG_TYPES = {
+//     JOIN_GAME: 'join_game',
+//     GAME_UPDATE: 'update',
+//     INPUT: 'input',
+//     GAME_OVER: 'dead',
 // }
 
-// // Create a java client socket.
-// //var javaClient = getConn('Java');
+// Import net module.
 
-// // Create node client socket.
-// var nodeClient = getConn('Node');
+const readline = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-// //javaClient.write('Java is best programming language. ');
+
+const socketio = require("socket.io-client");
+const { MSG_TYPES } = require("../constants");
+
+const socket = socketio.connect("http://localhost:3000");
+
+readline.question('Enter:', command => {
+    console.log("Here")
+    // socket.emit("host_game", "Player1")
+    if (command === '1') {
+        socket.emit("host_game", "Player1")
+    }
+    if (command === '2') {
+        socket.emit("join_game", "Player2")
+    }
+    readline.close();
+});
+
+
+
+
+

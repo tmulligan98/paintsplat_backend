@@ -6,6 +6,7 @@ class splat {
         this.yCoord = 0.0;
         this.size = Constants.SPLAT_RADIUS;
         // need colour?
+        this.color = "";
 
         // Origin (0,0) of canvas is bottom left
 
