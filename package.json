@@ -1,7 +1,7 @@
 {
   "name": "paintsplat_backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "A backend for the Computer Engineering group's PaintSplat game. Assignment 1 for the Advanced Software Engineering Module",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
