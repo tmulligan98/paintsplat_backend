@@ -52,6 +52,7 @@ const lobby = new Lobby();
 
 function joinLobby(username) {  // Allow a socket connection to join the lobby.
     // Check if max player count exceeded
+    console.log("Player joining lobby:", username);
     if (lobby.playerCount > Constants.MAX_PLAYERS) {
         this.emit(Constants.MSG_TYPES.DENY_ENTRY)
         return;
@@ -67,12 +68,14 @@ function joinLobby(username) {  // Allow a socket connection to join the lobby.
 function createLobby(username) {    // Allow for someone to host a game.
     // Assign lobby host as player
     // Tell player what the id is
+    console.log("Player creating lobby:", username);
     this.emit("lobby_id: ", lobby.lobbyId);
     lobby.addHost(this, username);
 }
 
 function onDisconnect() {   // Allow for someone to leave a game
     username = lobby.dropPlayer(this.id);
+    console.log("Player leaving:", username);
     io.emit("player_left: ", username)
     // game.dropPlayer()
 }

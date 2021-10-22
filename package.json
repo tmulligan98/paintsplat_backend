@@ -4,7 +4,11 @@
   "description": "A backend for the Computer Engineering group's PaintSplat game. Assignment 1 for the Advanced Software Engineering Module",
   "main": "server.js",
   "dependencies": {
-    "nodemon": "^2.0.14"
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "nodemon": "^2.0.14",
+    "path": "^0.12.7",
+    "socketio": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {
