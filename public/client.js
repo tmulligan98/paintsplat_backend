@@ -17,7 +17,7 @@ const socketio = require("socket.io-client");
 const { MSG_TYPES } = require("../constants");
 
 const socket = socketio.connect("http://localhost:3000");
-//const socket = socketio.connect("https://pure-meadow-74449.herokuapp.com:3000");
+//const socket = socketio.connect("https://pure-meadow-74449.herokuapp.com");
 
 readline.question('Enter:', command => {
     console.log("Here")
