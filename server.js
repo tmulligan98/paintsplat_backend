@@ -36,6 +36,7 @@ io.on('connection', socket => {
     // Create a lobby.
     socket.on(Constants.MSG_TYPES.HOST_GAME, createLobby);
     // Start the game.
+    // Todo: Host only
     socket.on(Constants.MSG_TYPES.START_GAME, () => {
         lobby.startGame(socket.id);
     });
