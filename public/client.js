@@ -21,6 +21,8 @@ const socket = socketio.connect("http://localhost:3000");
 
 
 
+const socket = socketio.connect("http://localhost:3000");
+//const socket = socketio.connect("https://pure-meadow-74449.herokuapp.com");
 
 
 const readline = require('readline');
