@@ -17,7 +17,25 @@ module.exports = Object.freeze({
         DENY_ENTRY: "no_entry",
         JOIN_GAME: "join_game",
         START_GAME: "start_game",
-        HOST_GAME: "host_game"
+        HOST_GAME: "host_game",
+        LEAVE_GAME: "leave_game",
+        ERROR_MSG: "error_msg",
+        GAME_END: "game_end",
+        NEW_HOST: "new_host"
+    },
+    RESPONSE_BODY: {
+        "message": "",
+        "time": 0.00
+    },
+    PLAYER_LEFT_BODY: {
+        "username": "",
+        "time": 0.00
+    },
+    ERROR_MESSAGE_BODY: {
+        "code": 0,
+        "message": ""
     }
-
 });
+
+
+module.exports
