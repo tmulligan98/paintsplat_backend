@@ -1,7 +1,7 @@
 const Constants = require('../shared/constants');
 class splat {
     constructor() {
-        // Initial coords wrt to screen
+        // Initial coords wrt to canvas
         this.xCoord = 0.0;
         this.yCoord = 0.0;
         this.size = Constants.SPLAT_RADIUS;
@@ -9,8 +9,6 @@ class splat {
         this.color = "";
 
         // Origin (0,0) of canvas is bottom left
-
-
     }
 
 }

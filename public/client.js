@@ -20,8 +20,6 @@ const socket = socketio.connect("http://localhost:3000");
 // });
 
 
-
-const socket = socketio.connect("http://localhost:3000");
 //const socket = socketio.connect("https://pure-meadow-74449.herokuapp.com");
 
 
@@ -41,12 +39,14 @@ function replDemo() {
             if (line === "1") {
                 console.log(`Host game`)
                 socket.emit("host_game", CREATE_MSG)
+                socket.on("lobby_id", messageInput)
             } else if (line === "2") {
                 console.log('Join Game')
                 socket.emit("join_game", JOIN_MSG)
             } else if (line === "3") {
                 console.log('Start')
                 socket.emit("start_game")
+                socket.on("start_game", messageInput)
             } else {
                 console.log(`unknown command: "${line}"`)
             }
@@ -67,6 +67,10 @@ async function run() {
     } catch (e) {
         console.log('failed:', e)
     }
+}
+
+function messageInput(message) {
+    console.log(message)
 }
 
 run()

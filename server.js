@@ -68,6 +68,8 @@ function joinLobby(message) {  // Allow a socket connection to join the lobby.
 
     // Otherwise...
     lobby.addPlayer(this, username)
+    // Let em know
+    this.emit("welcome")
     // Announce new player
     io.emit("new_player: ", username)
 }
@@ -79,7 +81,7 @@ function createLobby(message) {    // Allow for someone to host a game.
     // Tell player what the id is
     const username = parsers.parseUsername(message);
     console.log("Player creating lobby:", username);
-    this.emit("lobby_id: ", lobby.lobbyId);
+    this.emit("lobby_id", lobby.lobbyId);
     lobby.addHost(this, username);
 }
 
@@ -88,9 +90,7 @@ function onDisconnect() {   // Allow for someone to leave a game
         username = lobby.dropPlayer(this.id);
         console.log("Player leaving:", username);
         // Broadcast that a given player left
-        const msg = Constants.PLAYER_LEFT_BODY;
-        msg["username"] = username;
-        io.emit(Constants.MSG_TYPES.LEAVE_GAME, msg)
+        io.emit(Constants.MSG_TYPES.LEAVE_GAME, username)
     } catch (error) {
         console.log("Player Left (Unknown)")
     }
