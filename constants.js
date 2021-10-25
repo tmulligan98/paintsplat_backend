@@ -17,7 +17,9 @@ module.exports = Object.freeze({
         DENY_ENTRY: "no_entry",
         JOIN_GAME: "join_game",
         START_GAME: "start_game",
-        HOST_GAME: "host_game"
-    }
+        HOST_GAME: "host_game",
+        INPUT: 'input',
+    },
+
 
 });

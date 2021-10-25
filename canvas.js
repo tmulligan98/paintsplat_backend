@@ -31,6 +31,18 @@ class canvas {
         this.dy = 0.0
     }
 
+    // add splats to the canvas for every user input
+    addSplats(splat){
+        if (this.validSplat(splat)){
+            this.splats.push(splat);
+        }
+        else{
+            console.log('You missed your splat');
+        }
+        
+        
+    }
+
     update(dt, splat) {
 
         this.timeElapsed += dt;
@@ -51,8 +63,8 @@ class canvas {
         let b = 0.0
         for (spl in this.splats) {
             //c = sqrt(a^2 + b^2)
-            a = abs(splat.xCoord - splat.xCoord);
-            b = abs(splat.yCoord - splat.yCoord);
+            a = abs(spl.xCoord - splat.xCoord);
+            b = abs(spl.yCoord - splat.yCoord);
             c = sqrt(a ** 2 + b ** 2);
             if (c < 2 * Constants.SPLAT_RADIUS) {
                 return false;
