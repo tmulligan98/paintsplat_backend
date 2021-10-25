@@ -11,6 +11,8 @@ const Constants = require('./constants');
 
 const parsers = require('./utils');
 
+const canvas = require('./canvas');
+
 
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")))
@@ -34,7 +36,7 @@ io.on('connection', socket => {
     // Disconnect
     socket.on("disconnect", onDisconnect);    // TODO: Remove player from both lobby and/or game
     // This will handle splats.
-    // socket.on(Constants.MSG_TYPES.INPUT, onInput);
+    socket.on(Constants.MSG_TYPES.INPUT, onInput);
     // Create a lobby.
     socket.on(Constants.MSG_TYPES.HOST_GAME, createLobby);
     // Start the game.
@@ -97,3 +99,11 @@ function onDisconnect() {   // Allow for someone to leave a game
 
     // game.dropPlayer()
 }
+
+// function to allow input from user splats
+//let us assume splatCoords be objects with splat coordinates such as {'xcoord': something,'ycoord':something}
+function onInput(splatCoords){
+    game.handleInput(this, splatCoords);
+     
+}
+  

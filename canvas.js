@@ -35,6 +35,18 @@ class Canvas {
         this.speed_y = 0.0;
     }
 
+    // add splats to the canvas for every user input
+    addSplats(splat){
+        if (this.validSplat(splat)){
+            this.splats.push(splat);
+        }
+        else{
+            console.log('You missed your splat');
+        }
+        
+        
+    }
+
     update(dt, splat) {
 
         this.timeElapsed += dt;
@@ -49,7 +61,6 @@ class Canvas {
         this.moveBoard()
 
     }
-
 
     // collision with borders
     //

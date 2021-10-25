@@ -3,7 +3,11 @@
 // Game timer control how long game goes on for
 // Batch update thing
 // ...
+const Splat = require('./Splat');
+const canvas = require('./canvas');
 
+
+const board = new canvas();
 
 class Game {
     constructor() {
@@ -14,12 +18,14 @@ class Game {
         // setInterval(this.update.bind(this), 1000 / 60);
     }
 
-    // addPlayer
 
-    // removePlayer
 
     // handleInput
-
+    handleInput(socket,input){
+        splat = new Splat(input['xcoord'], input['ycoord']);
+        board.addSplats(splat);
+         
+    }
     // update
     // Needs to:
     // Get time from last update
