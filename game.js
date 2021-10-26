@@ -30,4 +30,23 @@ class Game {
 
 
 }
+
+// NOTE: Once a splat is valid, it needs to be added to the Canvas's list of splats!
+// Given a new splat, check if the new splat is valid
+function validSplat(splat, CanvasObject) {
+    let a = 0.0
+    let b = 0.0
+    for (spl in CanvasObject.splats) {
+        //c = sqrt(a^2 + b^2)
+        a = abs(splat.xCoord - splat.xCoord);
+        b = abs(splat.yCoord - splat.yCoord);
+        c = sqrt(a ** 2 + b ** 2);
+        if (c < 2 * Constants.SPLAT_RADIUS) {
+            return false;
+        }
+
+    }
+    return true;
+
+}
 module.exports = Game;

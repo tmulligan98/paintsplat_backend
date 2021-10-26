@@ -36,32 +36,17 @@ class canvas {
         this.timeElapsed += dt;
 
         // Is splat valid?
-        if (this.updateSplat(splat)) {
-            this.splats.push(splat);
-        }
+        // if (this.updateSplat(splat)) {
+        //     this.splats.push(splat);
+        // }
 
         // Update course of canvas
         // What trajectory is this going to follow?
+        this.moveBoard()
 
     }
 
-    // Given a new splat, check if the new splat is valid
-    validSplat(splat) {
-        let a = 0.0
-        let b = 0.0
-        for (spl in this.splats) {
-            //c = sqrt(a^2 + b^2)
-            a = abs(splat.xCoord - splat.xCoord);
-            b = abs(splat.yCoord - splat.yCoord);
-            c = sqrt(a ** 2 + b ** 2);
-            if (c < 2 * Constants.SPLAT_RADIUS) {
-                return false;
-            }
 
-        }
-        return true;
-
-    }
     // collision with borders
     //
     moveBoard() {
