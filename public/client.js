@@ -2,8 +2,8 @@ const socketio = require("socket.io-client");
 const CREATE_MSG = { "username": "Player1" }
 const JOIN_MSG = { "username": "Player2", "LobbyId": "AAAAA" }
 
-const socket = socketio.connect("http://localhost:3000");
-//const socket = socketio.connect("https://pure-meadow-74449.herokuapp.com:3000");
+//const socket = socketio.connect("http://localhost:3000");
+const socket = socketio.connect("https://pure-meadow-74449.herokuapp.com");
 
 // When emitting, the first param is the event, the next is the message / object...
 
@@ -19,8 +19,6 @@ const socket = socketio.connect("http://localhost:3000");
 //     readline.close();
 // });
 
-
-//const socket = socketio.connect("https://pure-meadow-74449.herokuapp.com");
 
 
 const readline = require('readline');
