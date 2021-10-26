@@ -18,10 +18,8 @@ module.exports = Object.freeze({
         JOIN_GAME: "join_game",
         START_GAME: "start_game",
         HOST_GAME: "host_game",
-        LEAVE_GAME: "leave_game",
-        ERROR_MSG: "error_msg",
-        GAME_END: "game_end",
-        NEW_HOST: "new_host"
+        INPUT: 'input',
+        GAME_UPDATE: 'update_game',
     },
     RESPONSE_BODY: {
         "message": "",
