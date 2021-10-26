@@ -18,35 +18,37 @@ class Game {
         this.scores = {}
         setInterval(this.update.bind(this), 1000 / 60);
     }
-   
+
     // handleInput
-    handleInput(socket, input){
+    handleInput(socket, input) {
 
-      
-      if(validSplat(input["xCoord"], input["yCoord"], this.canvas) && this.players[socket.id].fireCooldown === 0){
+        if (this.players[socket.id].fireCooldown === 0) {
+            if (validSplat(input["xCoord"], input["yCoord"], this.canvas)) {
 
-        // Initialise a splat object
-        splat = new Splat(input['xCoord'], input['yCoord'], this.players[socket.id]);
-        
-        //add splat to the list
-        this.canvas.splats.push(splat)
-        console.log('Your splat is valid and has been recorded')
+                // Initialise a splat object
+                splat = new Splat(input['xCoord'], input['yCoord'], this.players[socket.id]);
 
-        this.players[socket.id].score += 1;
-        //this.update(socket.id)
-      }
-      else{
-        console.log("you missed");
-      }
+                //add splat to the list
+                this.canvas.splats.push(splat)
+                console.log('Your splat is valid and has been recorded')
 
-      // Player Cooldown
-      this.players[socket.id].fireCooldown = Constants.PLAYER_FIRE_COOLDOWN;
+                this.players[socket.id].score += 1;
+                //this.update(socket.id)
+            }
+            else {
+                console.log("you missed");
+            }
+        }
+
+
+        // Player Cooldown
+        this.players[socket.id].fireCooldown = Constants.PLAYER_FIRE_COOLDOWN;
 
     }
 
     // update
-    update(/*id*/){
-        
+    update(/*id*/) {
+
 
         // updating scores
         // this.player[id].score += 1
@@ -54,60 +56,47 @@ class Game {
         if (this.shouldSendUpdate) {
             const leaderboard = this.getLeaderboard();
             Object.keys(this.sockets).forEach(playerID => {
-              const socket = this.sockets[playerID];
-              const player = this.players[playerID];
-              socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(this.canvas, leaderboard));
+                const socket = this.sockets[playerID];
+                const player = this.players[playerID];
+                socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(this.canvas, leaderboard));
             });
             this.shouldSendUpdate = false;
-          } else {
+        } else {
             this.shouldSendUpdate = true;
-          }
         }
-      
-        getLeaderboard() {
-          return Object.values(this.players)
+    }
+
+    getLeaderboard() {
+        return Object.values(this.players)
             .sort((p1, p2) => p2.score - p1.score)
             .slice(0, 5)
             .map(p => ({ username: p.username, score: Math.round(p.score) }));
-        }
-        
-
-        // Create json object 
-        createUpdate(canvas, leaderboard) {
-          json_object = {
-            x_coord : canvas.xCoord,
-            y_coord : canvas.yCoord,
-            time_stamp: Date.now(),
-            leaderboard: getLeaderboard(),
-          
-          }
-         
-          listOfSplats = []
-          
-         
-          for (spl in splats){
-            
-            listOfSplats.push({
-              "splat_x": spl.xCoord,
-              "splat_y": spl.yCoord,
-              "player_ID": spl.player.id,
-              "colour": spl.player.colour,
-              })          
-          }
-          json_object['splat'] = listOfSplats
-          
-          return json_object
-
     }
 
-    
-    // Needs to:
-    // Get time from last update
-    // Handle user inputs. Maybe have a queue of player instructions to issue? LIFO kinda thing
-    // Update: (Update every other time? 30 ticks per second is okay)
-    // Update the board.
-    // Update splats.
 
+    // Create json object
+    createUpdate(canvas) {
+        json_object = {
+            x_coord: canvas.xCoord,
+            y_coord: canvas.yCoord,
+            time_stamp: Date.now(),
+            leaderboard: getLeaderboard(),
+        }
+
+        listOfSplats = [] // temporary array
+        for (spl in splats) {
+            listOfSplats.push({
+                "splat_x": spl.xCoord,
+                "splat_y": spl.yCoord,
+                "player_ID": spl.player.id,
+                "colour": spl.player.colour,
+            })
+        }
+        json_object['splat'] = listOfSplats
+
+        return json_object
+
+    }
 
 }
 
