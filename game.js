@@ -7,7 +7,6 @@ const Splat = require('./Splat');
 const canvas = require('./canvas');
 const Constants = require('./constants');
 
-const board = new canvas();
 
 class Game {
     constructor() {
@@ -15,31 +14,49 @@ class Game {
         this.players = {};
         this.lastUpdateTime = Date.now();
         this.shouldSendUpdate = false;
-        // setInterval(this.update.bind(this), 1000 / 60);
+        this.canvas = new canvas()
+        this.scores = {}
+        setInterval(this.update.bind(this), 1000 / 60);
     }
    
     // handleInput
-    handleInput(socket,input){
-        splat = new Splat(input['xcoord'], input['ycoord']);
-        if(board.addSplats(splat)){
-            //increase player score
-        }
+    handleInput(socket, input){
+
+      
+      if(validSplat(input["xCoord"], input["yCoord"], this.canvas) && this.players[socket.id].fireCooldown === 0){
+
+        // Initialise a splat object
+        splat = new Splat(input['xCoord'], input['yCoord'], this.players[socket.id]);
         
+        //add splat to the list
+        this.canvas.splats.push(splat)
+        console.log('Your splat is valid and has been recorded')
+
+        this.players[socket.id].score += 1;
+        //this.update(socket.id)
+      }
+      else{
+        console.log("you missed");
+      }
+
+      // Player Cooldown
+      this.players[socket.id].fireCooldown = Constants.PLAYER_FIRE_COOLDOWN;
+
     }
 
     // update
-    update(){
-        // Calculate time elapsed
-        const now = Date.now();
-        const dt = (now - this.lastUpdateTime) / 1000;
-        this.lastUpdateTime = now
+    update(/*id*/){
+        
+
+        // updating scores
+        // this.player[id].score += 1
 
         if (this.shouldSendUpdate) {
             const leaderboard = this.getLeaderboard();
             Object.keys(this.sockets).forEach(playerID => {
               const socket = this.sockets[playerID];
               const player = this.players[playerID];
-              socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(player, leaderboard));
+              socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(this.canvas, leaderboard));
             });
             this.shouldSendUpdate = false;
           } else {
@@ -53,13 +70,37 @@ class Game {
             .slice(0, 5)
             .map(p => ({ username: p.username, score: Math.round(p.score) }));
         }
+        
 
-
-        //need to be worked on
-        createUpdate(player, leaderboard) {
-
+        // Create json object 
+        createUpdate(canvas, leaderboard) {
+          json_object = {
+            x_coord : canvas.xCoord,
+            y_coord : canvas.yCoord,
+            time_stamp: Date.now(),
+            leaderboard: getLeaderboard(),
+          
+          }
+         
+          listOfSplats = []
+          
+         
+          for (spl in splats){
+            
+            listOfSplats.push({
+              "splat_x": spl.xCoord,
+              "splat_y": spl.yCoord,
+              "player_ID": spl.player.id,
+              "colour": spl.player.colour,
+              })          
+          }
+          json_object['splat'] = listOfSplats
+          
+          return json_object
 
     }
+
+    
     // Needs to:
     // Get time from last update
     // Handle user inputs. Maybe have a queue of player instructions to issue? LIFO kinda thing
@@ -72,13 +113,13 @@ class Game {
 
 // NOTE: Once a splat is valid, it needs to be added to the Canvas's list of splats!
 // Given a new splat, check if the new splat is valid
-function validSplat(splat, CanvasObject) {
+function validSplat(xCoord, yCoord, CanvasObject) {
     let a = 0.0
     let b = 0.0
     for (spl in CanvasObject.splats) {
         //c = sqrt(a^2 + b^2)
-        a = abs(splat.xCoord - splat.xCoord);
-        b = abs(splat.yCoord - splat.yCoord);
+        a = abs(xCoord - splat.xCoord);
+        b = abs(yCoord - splat.yCoord);
         c = sqrt(a ** 2 + b ** 2);
         if (c < 2 * Constants.SPLAT_RADIUS) {
             return false;

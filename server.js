@@ -8,7 +8,7 @@ const server = http.createServer(app);
 const io = socketio(server);
 const Lobby = require('./lobby');
 const Constants = require('./constants');
-
+const Game = require('./Game')
 const parsers = require('./utils');
 
 const canvas = require('./canvas');
@@ -67,8 +67,9 @@ function joinLobby(message) {  // Allow a socket connection to join the lobby.
         return;
     }
 
+    const clrs = ['red', 'green', 'orange'];
     // Otherwise...
-    lobby.addPlayer(this, username)
+    lobby.addPlayer(this, username, clrs[lobby.playerUsernames.length()-1])
     // Let em know
     this.emit("welcome")
     // Announce new player
@@ -102,7 +103,8 @@ function onDisconnect() {   // Allow for someone to leave a game
 // function to allow input from user splats
 //let us assume splatCoords be objects with splat coordinates such as {'xcoord': something,'ycoord':something}
 function onInput(splatCoords){
+    const game = new Game;
     game.handleInput(this, splatCoords);
-     
+ 
 }
   

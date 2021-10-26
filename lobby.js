@@ -41,7 +41,7 @@ class Lobby {
 
     addHost(socket, username) {
         this.hostId = socket.id;
-        this.addPlayer(socket, username);
+        this.addPlayer(socket, username, "blue");
     }
 
     // TODO: Given a playerId, drop a player from the game.
@@ -76,10 +76,10 @@ class Lobby {
     }
 
     // Given a player object, add that player
-    addPlayer(socket, username) {
+    addPlayer(socket, username, colour) {
         this.sockets[socket.id] = socket;
         this.playerCount += 1;
-        this.players[socket.id] = new Player(socket.id, username);
+        this.players[socket.id] = new Player(socket.id, username, colour);
         this.playerUsernames.push(username);
         // Tell player who is already in game
         socket.emit("players: ", this.playerUsernames);
@@ -98,6 +98,9 @@ class Lobby {
         // Populate the game.
         this.game.players = this.players;
         this.game.sockets = this.sockets;
+
+        // Initialise Player Positions
+
 
         // Return game object, populated with players.
         return this.game;
