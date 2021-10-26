@@ -19,6 +19,7 @@ module.exports = Object.freeze({
         START_GAME: "start_game",
         HOST_GAME: "host_game",
         INPUT: 'input',
+        GAME_UPDATE: 'update_game',
     },
 
 

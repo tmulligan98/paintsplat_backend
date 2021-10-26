@@ -32,12 +32,15 @@ class canvas {
     }
 
     // add splats to the canvas for every user input
+    //need to confirm
     addSplats(splat){
         if (this.validSplat(splat)){
             this.splats.push(splat);
+            return True
         }
         else{
             console.log('You missed your splat');
+            return False
         }
         
         
