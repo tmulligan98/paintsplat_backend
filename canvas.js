@@ -14,7 +14,7 @@ function isOverlappingXY(coord, speed, screenDimension, canvasDimension) {
 
 
 
-class canvas {
+class Canvas {
     constructor() {
         // Initial coords wrt to screen
         this.xCoord = 0.0;
@@ -29,6 +29,10 @@ class canvas {
         // Last x and y changes for the canvas
         this.dx = 0.0
         this.dy = 0.0
+
+        // Speed
+        this.speed_x = 0.0;
+        this.speed_y = 0.0;
     }
 
     update(dt, splat) {
@@ -36,6 +40,7 @@ class canvas {
         this.timeElapsed += dt;
 
         // Is splat valid?
+<<<<<<< HEAD
         // if (this.updateSplat(splat)) {
         //     this.splats.push(splat);
         // }
@@ -49,6 +54,38 @@ class canvas {
 
     // collision with borders
     //
+=======
+        if (this.validSplat(splat)) {
+            this.splats.push(splat);
+        }
+
+        // Update course of canvas
+        this.moveBoard();
+
+
+
+    }
+
+    // Given a new splat, check if the new splat is valid
+    validSplat(splat) {
+        let a = 0.0
+        let b = 0.0
+        for (spl in this.splats) {
+            //c = sqrt(a^2 + b^2)
+            a = abs(spl.xCoord - splat.xCoord);
+            b = abs(spl.yCoord - splat.yCoord);
+            c = sqrt(a ** 2 + b ** 2);
+            if (c < 2 * Constants.SPLAT_RADIUS) {
+                return false;
+            }
+
+        }
+        return true;
+
+    }
+
+    // Move the canvas board
+>>>>>>> 0cfa17ae86192c3fc5aba2c1e1a459d23a55fe90
     moveBoard() {
 
         // Change the canvas direction
@@ -90,7 +127,6 @@ class canvas {
 
 
 
-    // Need a method for controlling the motion of the canvas.
 
 }
-module.exports = canvas;
+module.exports = Canvas;
