@@ -29,6 +29,10 @@ class Canvas {
         // Last x and y changes for the canvas
         this.dx = 0.0
         this.dy = 0.0
+
+        // Speed
+        this.speed_x = 0.0;
+        this.speed_y = 0.0;
     }
 
     update(dt, splat) {
@@ -36,12 +40,14 @@ class Canvas {
         this.timeElapsed += dt;
 
         // Is splat valid?
-        if (this.updateSplat(splat)) {
+        if (this.validSplat(splat)) {
             this.splats.push(splat);
         }
 
         // Update course of canvas
-        // What trajectory is this going to follow?
+        this.moveBoard();
+
+
 
     }
 
@@ -62,8 +68,8 @@ class Canvas {
         return true;
 
     }
-    // collision with borders
-    //
+
+    // Move the canvas board
     moveBoard() {
 
         // Change the canvas direction
@@ -105,7 +111,6 @@ class Canvas {
 
 
 
-    // Need a method for controlling the motion of the canvas.
 
 }
 module.exports = Canvas;
