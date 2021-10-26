@@ -9,6 +9,8 @@ const io = socketio(server);
 const Lobby = require('./lobby');
 const Constants = require('./constants');
 
+const parsers = require('./utils');
+
 
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")))
@@ -19,7 +21,7 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 // Handle a socket connection request from web client
 // currently handles 2 playes. Can be amended as per the requirements for the game
 
-// const game = null;
+var game = null;
 
 io.on('connection', socket => {
     console.log(`Player has connected with id ${socket.id}`)
@@ -36,9 +38,12 @@ io.on('connection', socket => {
     // Create a lobby.
     socket.on(Constants.MSG_TYPES.HOST_GAME, createLobby);
     // Start the game.
-    // Todo: Host only
     socket.on(Constants.MSG_TYPES.START_GAME, () => {
-        lobby.startGame(socket.id);
+        game = lobby.startGame(socket.id);
+        const msg = Constants.RESPONSE_BODY;
+        msg["message"] = "Game commencing.";
+        msg["time"] = Date.now();
+        io.emit(Constants.MSG_TYPES.START_GAME, msg);
     });
 
 })
@@ -50,32 +55,45 @@ const lobby = new Lobby();
 // function onInput(splatCoords) { } //TODO: Handle input splats!!
 
 
-function joinLobby(username) {  // Allow a socket connection to join the lobby.
+function joinLobby(message) {  // Allow a socket connection to join the lobby.
+    // Get message contents
+    const username = parsers.parseUsername(message)
+    // const lobbyId = parseLobbyId(message)
     // Check if max player count exceeded
     console.log("Player joining lobby:", username);
     if (lobby.playerCount > Constants.MAX_PLAYERS) {
         this.emit(Constants.MSG_TYPES.DENY_ENTRY)
         return;
     }
+
     // Otherwise...
     lobby.addPlayer(this, username)
+    // Let em know
+    this.emit("welcome")
     // Announce new player
     io.emit("new_player: ", username)
 }
 
 
 //Only allow a single game to be hosted
-function createLobby(username) {    // Allow for someone to host a game.
+function createLobby(message) {    // Allow for someone to host a game.
     // Assign lobby host as player
     // Tell player what the id is
+    const username = parsers.parseUsername(message);
     console.log("Player creating lobby:", username);
-    this.emit("lobby_id: ", lobby.lobbyId);
+    this.emit("lobby_id", lobby.lobbyId);
     lobby.addHost(this, username);
 }
 
 function onDisconnect() {   // Allow for someone to leave a game
-    username = lobby.dropPlayer(this.id);
-    console.log("Player leaving:", username);
-    io.emit("player_left: ", username)
+    try {
+        username = lobby.dropPlayer(this.id);
+        console.log("Player leaving:", username);
+        // Broadcast that a given player left
+        io.emit(Constants.MSG_TYPES.LEAVE_GAME, username)
+    } catch (error) {
+        console.log("Player Left (Unknown)")
+    }
+
     // game.dropPlayer()
 }

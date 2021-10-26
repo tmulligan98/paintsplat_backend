@@ -14,7 +14,7 @@ function isOverlappingXY(coord, speed, screenDimension, canvasDimension) {
 
 
 
-class canvas {
+class Canvas {
     constructor() {
         // Initial coords wrt to screen
         this.xCoord = 0.0;
@@ -51,8 +51,8 @@ class canvas {
         let b = 0.0
         for (spl in this.splats) {
             //c = sqrt(a^2 + b^2)
-            a = abs(splat.xCoord - splat.xCoord);
-            b = abs(splat.yCoord - splat.yCoord);
+            a = abs(spl.xCoord - splat.xCoord);
+            b = abs(spl.yCoord - splat.yCoord);
             c = sqrt(a ** 2 + b ** 2);
             if (c < 2 * Constants.SPLAT_RADIUS) {
                 return false;
@@ -108,4 +108,4 @@ class canvas {
     // Need a method for controlling the motion of the canvas.
 
 }
-module.exports = canvas;
+module.exports = Canvas;
