@@ -35,21 +35,43 @@ class Canvas {
         this.speed_y = 0.0;
     }
 
+    // add splats to the canvas for every user input
+    //need to confirm
+    addSplats(splat){
+        if (this.validSplat(splat)){
+            this.splats.push(splat);
+            return True
+        }
+        else{
+            console.log('You missed your splat');
+            return False
+        }
+        
+        
+    }
+
+    // add splats to the canvas for every user input
+    //need to confirm
+    // addSplats(splat){
+    //     if (this.validSplat(splat)){
+    //         this.splats.push(splat);
+    //         return True
+    //     }
+    //     else{
+    //         console.log('You missed your splat');
+    //         return False
+    //     }  
+    //}
+
     update(dt, splat) {
 
         this.timeElapsed += dt;
-
-        // Is splat valid?
-        // if (this.updateSplat(splat)) {
-        //     this.splats.push(splat);
-        // }
-
+       
         // Update course of canvas
         // What trajectory is this going to follow?
         this.moveBoard()
 
     }
-
 
     // collision with borders
     //

@@ -1,5 +1,7 @@
 class Leaderboard {
-    constructor() { }
+    constructor() {
+        this.scores = {}
+     }
     update() { }
 }
 module.exports = Leaderboard;
