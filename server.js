@@ -84,8 +84,8 @@ function createLobby(message) {    // Allow for someone to host a game.
     const username = parsers.parseUsername(message);
     console.log("Player creating lobby:", username);
     this.emit("lobby_id", lobby.lobbyId);
-    io.emit("player_list", parsers.generatePlayerListBody(lobby.playerUsernames))
     lobby.addHost(this, username);
+    io.emit("player_list", parsers.generatePlayerListBody(lobby.playerUsernames))
 }
 
 function onDisconnect() {   // Allow for someone to leave a game
