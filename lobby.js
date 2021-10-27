@@ -84,7 +84,7 @@ class Lobby {
             const msg = Constants.ERROR_MESSAGE_BODY;
             msg["code"] = 401;
             msg["message"] = "You're not the host!";
-            this.sockets[playerId].emit(Constants.MSG_TYPES.ERROR_MSG, msg);
+            this.sockets[playerId].emit(Constants.MSG_TYPES.ERROR_MSG, msg); // is this where the error is?
             console.log("Non-host player " + this.sockets[playerId].username + " attempted to start the game.");
             return null;
         }
