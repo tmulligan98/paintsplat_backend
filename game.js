@@ -3,7 +3,7 @@
 // Game timer control how long game goes on for
 // Batch update thing
 // ...
-const Splat = require('./Splat');
+const Splat = require('./splat');
 const Canvas = require('./canvas');
 const Constants = require('./constants');
 
