@@ -1,4 +1,4 @@
-const { MAX_SPEED, MAX_ACCELERATION, SCREEN_LENGTH, SCREEN_WIDTH } = require('./constants');
+const { MAX_SPEED, MAX_ACCELERATION, SCREEN_HEIGHT, SCREEN_WIDTH, CANVAS_HEIGHT, CANVAS_WIDTH } = require('./constants');
 const Constants = require('./constants');
 
 // Accepts either x or y coordinate and speed to determine if overlapping on that axis
@@ -76,17 +76,17 @@ class Canvas {
         if (this.timeElapsed > 0.5) {
             this.timeElapsed = 0;
 
-            dx = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
+            dx = ((Math.random() - 0.5) * MAX_ACCELERATION * 2); 
             if (speed_x > 0) {
                 speed_x = Math.min(speed_x + dx, MAX_SPEED);
             } else {
-                speed_x = Math.max(speed_x + dx, MAX_SPEED);
+                speed_x = Math.max(speed_x + dx, -MAX_SPEED);
             }
             dy = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
             if (speed_y > 0) {
-                speed_x = Math.min(speed_y + dy, MAX_SPEED);
+                speed_y = Math.min(speed_y + dy, MAX_SPEED);
             } else {
-                speed_y = Math.max(speed_x + dy, MAX_SPEED);
+                speed_y = Math.max(speed_x + dy, -MAX_SPEED);
             }
 
             this.speed_x = speed_x;
