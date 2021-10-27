@@ -82,10 +82,10 @@ class Canvas {
 
         // update canvas coordinates
         // About to overlap...
-        if (isOverlappingXY(this.xCoord, speedX, SCREEN_WIDTH, CANVAS_WIDTH) == true) {
+        if (isOverlappingXY(this.xCoord, this.speedX, SCREEN_WIDTH, CANVAS_WIDTH) == true) {
             this.speedX = -this.speedX;
         }
-        if (isOverlappingXY(this.yCoord, speedY, SCREEN_HEIGHT, CANVAS_HEIGHT) == true) {
+        if (isOverlappingXY(this.yCoord, this.speedY, SCREEN_HEIGHT, CANVAS_HEIGHT) == true) {
             this.speedY = -this.speedY;
         }
         this.xCoord = this.xCoord + this.speedX;
