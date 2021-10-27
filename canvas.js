@@ -71,11 +71,11 @@ class Canvas {
             if (speed_y > 0) {
                 speed_y = Math.min(speed_y + dy, MAX_SPEED);
             } else {
-                speed_y = Math.max(speed_x + dy, -MAX_SPEED);
+                speed_y = Math.max(speed_y + dy, -MAX_SPEED);
             }
 
-            this.speedX = speedX;
-            this.speedY = speedY;
+            this.speedX = speed_x;
+            this.speedY = speed_y;
 
 
         }
