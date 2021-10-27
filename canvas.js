@@ -8,12 +8,6 @@ function isOverlappingXY(coord, speed, screenDimension, canvasDimension) {
     }
 }
 
-
-
-
-
-
-
 class Canvas {
     constructor() {
         // Initial coords wrt to screen
@@ -31,45 +25,35 @@ class Canvas {
         this.dy = 0.0
 
         // Speed
-        this.speed_x = 0.0;
-        this.speed_y = 0.0;
+        this.speedX = 0.0;
+        this.speedY = 0.0;
     }
+
+    // add splats to the canvas for every user input
+    //need to confirm
+    // addSplats(splat) {
+    //     if (this.validSplat(splat)) {
+    //         this.splats.push(splat);
+    //         return True
+    //     }
+    //     else {
+    //         console.log('You missed your splat');
+    //         return False
+    //     }
+    // }
 
     update(dt, splat) {
 
         this.timeElapsed += dt;
 
-        // Is splat valid?
-        if (this.validSplat(splat)) {
-            this.splats.push(splat);
-        }
-
         // Update course of canvas
-        this.moveBoard();
-
-
-
-    }
-
-    // Given a new splat, check if the new splat is valid
-    validSplat(splat) {
-        let a = 0.0
-        let b = 0.0
-        for (spl in this.splats) {
-            //c = sqrt(a^2 + b^2)
-            a = abs(spl.xCoord - splat.xCoord);
-            b = abs(spl.yCoord - splat.yCoord);
-            c = sqrt(a ** 2 + b ** 2);
-            if (c < 2 * Constants.SPLAT_RADIUS) {
-                return false;
-            }
-
-        }
-        return true;
+        // What trajectory is this going to follow?
+        this.moveBoard()
 
     }
 
-    // Move the canvas board
+    // collision with borders
+    //
     moveBoard() {
 
         // Change the canvas direction
@@ -82,6 +66,7 @@ class Canvas {
             } else {
                 speed_x = Math.max(speed_x + dx, -MAX_SPEED);
             }
+            // y component
             dy = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
             if (speed_y > 0) {
                 speed_y = Math.min(speed_y + dy, MAX_SPEED);
@@ -89,22 +74,22 @@ class Canvas {
                 speed_y = Math.max(speed_x + dy, -MAX_SPEED);
             }
 
-            this.speed_x = speed_x;
-            this.speed_y = speed_y;
+            this.speedX = speedX;
+            this.speedY = speedY;
 
 
         }
 
         // update canvas coordinates
         // About to overlap...
-        if (isOverlappingXY(this.xCoord, speed_x, SCREEN_WIDTH, CANVAS_WIDTH) == true) {
-            this.speed_x = -this.speed_x;
+        if (isOverlappingXY(this.xCoord, speedX, SCREEN_WIDTH, CANVAS_WIDTH) == true) {
+            this.speedX = -this.speedX;
         }
-        if (isOverlappingXY(this.yCoord, speed_y, SCREEN_HEIGHT, CANVAS_HEIGHT) == true) {
-            this.speed_y = -this.speed_y;
+        if (isOverlappingXY(this.yCoord, speedY, SCREEN_HEIGHT, CANVAS_HEIGHT) == true) {
+            this.speedY = -this.speedY;
         }
-        this.xCoord = this.xCoord + this.speed_x;
-        this.yCoord = this.yCoord + this.speed_y;
+        this.xCoord = this.xCoord + this.speedX;
+        this.yCoord = this.yCoord + this.speedY;
 
 
     }
