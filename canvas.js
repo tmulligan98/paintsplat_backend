@@ -21,28 +21,15 @@ class Canvas {
         // This will be an array of splat objects
         this.splats = []
         // Last x and y changes for the canvas
-        this.dx = 0.0
-        this.dy = 0.0
+        // this.dx = 0.0
+        // this.dy = 0.0
 
         // Speed
         this.speedX = 0.0;
         this.speedY = 0.0;
     }
 
-    // add splats to the canvas for every user input
-    //need to confirm
-    // addSplats(splat) {
-    //     if (this.validSplat(splat)) {
-    //         this.splats.push(splat);
-    //         return True
-    //     }
-    //     else {
-    //         console.log('You missed your splat');
-    //         return False
-    //     }
-    // }
-
-    update(dt, splat) {
+    update(dt, /*splat*/) {
 
         this.timeElapsed += dt;
 
@@ -60,7 +47,7 @@ class Canvas {
         if (this.timeElapsed > 0.5) {
             this.timeElapsed = 0;
 
-            dx = ((Math.random() - 0.5) * MAX_ACCELERATION * 2); 
+            dx = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
             if (speed_x > 0) {
                 speed_x = Math.min(speed_x + dx, MAX_SPEED);
             } else {
