@@ -8,7 +8,7 @@ const server = http.createServer(app);
 const io = socketio(server);
 const Lobby = require('./lobby');
 const Constants = require('./constants');
-const Game = require('./Game')
+const Game = require('./game')
 const parsers = require('./utils');
 
 const canvas = require('./canvas');
@@ -19,8 +19,7 @@ app.use(express.static(path.join(__dirname, "public")))
 // Start server
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
-// Handle a socket connection request from web client
-// currently handles 2 playes. Can be amended as per the requirements for the game
+// TODO: I used pythonic for loops that don't work as intended. We gotta change em.
 
 var game = null;
 
@@ -40,11 +39,11 @@ io.on('connection', socket => {
     socket.on(Constants.MSG_TYPES.HOST_GAME, createLobby);
     // Start the game.
     socket.on(Constants.MSG_TYPES.START_GAME, () => {
-        game = lobby.startGame(socket.id);
         const msg = Constants.RESPONSE_BODY;
         msg["message"] = "Game commencing.";
         msg["time"] = Date.now();
         io.emit(Constants.MSG_TYPES.START_GAME, msg);
+        game = lobby.startGame(socket.id);
     });
 
 })
@@ -69,11 +68,11 @@ function joinLobby(message) {  // Allow a socket connection to join the lobby.
 
     const clrs = ['red', 'green', 'orange'];
     // Otherwise...
-    lobby.addPlayer(this, username, clrs[lobby.playerUsernames.length()-1])
+    lobby.addPlayer(this, username, clrs[lobby.playerUsernames.length - 1])
     // Let em know
     this.emit("welcome")
     // Announce new player
-    io.emit("new_player: ", username)
+    io.emit("player_list", parsers.generatePlayerListBody(lobby.playerUsernames))
 }
 
 
@@ -102,9 +101,8 @@ function onDisconnect() {   // Allow for someone to leave a game
 
 // function to allow input from user splats
 //let us assume splatCoords be objects with splat coordinates such as {'xcoord': something,'ycoord':something}
-function onInput(splatCoords){
+function onInput(splatCoords) {
     const game = new Game;
     game.handleInput(this, splatCoords);
- 
+
 }
-  

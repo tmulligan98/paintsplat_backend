@@ -4,12 +4,6 @@ const Game = require('./game');
 const Player = require('./player');
 
 
-// This class will be instantiated when a player chooses to host a game.
-// In here, we have methods to:
-// Get the lobby id, a random 6 character string
-// Start the game
-// Close the lobby
-
 // Return a random ID
 function makeId() {
 
@@ -30,7 +24,6 @@ class Lobby {
         this.lobbyId = "";
         this.playerCount = 0;
         this.players = {};
-        this.game = new Game();
         this.sockets = {};
         this.hostId = "";
         this.playerUsernames = [];
@@ -44,7 +37,7 @@ class Lobby {
         this.addPlayer(socket, username, "blue");
     }
 
-    // TODO: Given a playerId, drop a player from the game.
+
     dropPlayer(playerId) {
         // Get the player username
         const uName = this.players[playerId].username;
@@ -82,7 +75,7 @@ class Lobby {
         this.players[socket.id] = new Player(socket.id, username, colour);
         this.playerUsernames.push(username);
         // Tell player who is already in game
-        socket.emit("players: ", this.playerUsernames);
+        // socket.emit("players: ", this.playerUsernames);
     }
 
     startGame(playerId) {   // Commence the game. This should return the game object to where it is called (server.js)
@@ -96,14 +89,10 @@ class Lobby {
             return null;
         }
         // Populate the game.
-        this.game.players = this.players;
-        this.game.sockets = this.sockets;
-
-        // Initialise Player Positions
-
+        const game = new Game(this.sockets, this.players);
 
         // Return game object, populated with players.
-        return this.game;
+        return game;
     }
 
 
@@ -114,7 +103,6 @@ class Lobby {
         }
         this.playerCount = 0;
         this.players = {};
-        this.game = new Game();
         this.sockets = {};
         this.hostId = "";
         this.playerUsernames = [];

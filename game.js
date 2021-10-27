@@ -4,19 +4,19 @@
 // Batch update thing
 // ...
 const Splat = require('./Splat');
-const canvas = require('./canvas');
+const Canvas = require('./canvas');
 const Constants = require('./constants');
 
 
 class Game {
-    constructor() {
-        this.sockets = {};
-        this.players = {};
+    constructor(sockets, players) {
+        this.sockets = sockets;
+        this.players = players;
         this.lastUpdateTime = Date.now();
         this.shouldSendUpdate = false;
-        this.canvas = new canvas()
+        this.canvas = new Canvas()
         this.scores = {}
-        setInterval(this.update.bind(this), 1000 / 60);
+        setInterval(this.update.bind(this), 1000 /*/ 60*/);
     }
 
     // handleInput
@@ -26,7 +26,7 @@ class Game {
             if (validSplat(input["xCoord"], input["yCoord"], this.canvas)) {
 
                 // Initialise a splat object
-                splat = new Splat(input['xCoord'], input['yCoord'], this.players[socket.id]);
+                const splat = new Splat(input['xCoord'], input['yCoord'], this.players[socket.id]);
 
                 //add splat to the list
                 this.canvas.splats.push(splat)
@@ -46,45 +46,24 @@ class Game {
 
     }
 
-    // update
-    update(/*id*/) {
-
-
-        // updating scores
-        // this.player[id].score += 1
-
-        if (this.shouldSendUpdate) {
-            const leaderboard = this.getLeaderboard();
-            Object.keys(this.sockets).forEach(playerID => {
-                const socket = this.sockets[playerID];
-                const player = this.players[playerID];
-                socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(this.canvas, leaderboard));
-            });
-            this.shouldSendUpdate = false;
-        } else {
-            this.shouldSendUpdate = true;
-        }
-    }
-
     getLeaderboard() {
         return Object.values(this.players)
-            .sort((p1, p2) => p2.score - p1.score)
+            .sort((player1, player2) => player2.score - player1.score)
             .slice(0, 5)
-            .map(p => ({ username: p.username, score: Math.round(p.score) }));
+            .map(player => ({ uName: player.uName, score: Math.round(player.score) }));
     }
-
 
     // Create json object
     createUpdate(canvas) {
-        json_object = {
+        const json_object = {
             x_coord: canvas.xCoord,
             y_coord: canvas.yCoord,
             time_stamp: Date.now(),
-            leaderboard: getLeaderboard(),
+            leaderboard: this.getLeaderboard(),
         }
 
-        listOfSplats = [] // temporary array
-        for (spl in splats) {
+        var listOfSplats = [] // temporary array
+        for (spl in this.canvas.splats) {
             listOfSplats.push({
                 "splat_x": spl.xCoord,
                 "splat_y": spl.yCoord,
@@ -97,6 +76,28 @@ class Game {
         return json_object
 
     }
+
+
+    // update
+    update(/*id*/) {
+
+        this.canvas.update();
+
+        if (this.shouldSendUpdate) {
+            const leaderboard = this.getLeaderboard();
+            Object.keys(this.sockets).forEach(playerID => {
+                const socket = this.sockets[playerID];
+                // const player = this.players[playerID];
+                console.log(this.createUpdate(this.canvas, leaderboard))
+                socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(this.canvas, leaderboard));
+            });
+            this.shouldSendUpdate = false;
+        } else {
+            this.shouldSendUpdate = true;
+        }
+    }
+
+
 
 }
 
