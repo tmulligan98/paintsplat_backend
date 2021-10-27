@@ -72,6 +72,7 @@ function joinLobby(message) {  // Allow a socket connection to join the lobby.
     // Let em know
     this.emit("welcome")
     // Announce new player
+    console.log(parsers.generatePlayerListBody(lobby.playerUsernames))
     io.emit("player_list", parsers.generatePlayerListBody(lobby.playerUsernames))
 }
 
@@ -83,6 +84,7 @@ function createLobby(message) {    // Allow for someone to host a game.
     const username = parsers.parseUsername(message);
     console.log("Player creating lobby:", username);
     this.emit("lobby_id", lobby.lobbyId);
+    io.emit("player_list", parsers.generatePlayerListBody(lobby.playerUsernames))
     lobby.addHost(this, username);
 }
 
@@ -104,7 +106,7 @@ function onDisconnect() {   // Allow for someone to leave a game
 // function to allow input from user splats
 //let us assume splatCoords be objects with splat coordinates such as {'xcoord': something,'ycoord':something}
 function onInput(splatCoords) {
-    const game = new Game;
+    // const game = new Game;
     game.handleInput(this, splatCoords);
 
 }
