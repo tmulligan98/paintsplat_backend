@@ -81,7 +81,11 @@ class Game {
     // update
     update(/*id*/) {
 
-        this.canvas.update();
+        const now = Date.now();
+        const dt = (now - this.lastUpdateTime) / 1000;
+        this.lastUpdateTime = now;
+
+        this.canvas.update(dt);
 
         if (this.shouldSendUpdate) {
             const leaderboard = this.getLeaderboard();

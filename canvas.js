@@ -4,7 +4,7 @@ const Constants = require('./constants');
 // Accepts either x or y coordinate and speed to determine if overlapping on that axis
 function isOverlappingXY(coord, speed, screenDimension, canvasDimension) {
     if (coord + speed < 0 || coord + speed > screenDimension - canvasDimension) {
-        return True
+        return true
     }
 }
 
@@ -27,6 +27,7 @@ class Canvas {
         // Speed
         this.speedX = 0.0;
         this.speedY = 0.0;
+
     }
 
     update(dt, /*splat*/) {
@@ -47,32 +48,32 @@ class Canvas {
         if (this.timeElapsed > 0.5) {
             this.timeElapsed = 0;
 
-            dx = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
-            if (speed_x > 0) {
-                speed_x = Math.min(speed_x + dx, MAX_SPEED);
+            const dx = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
+            if (this.speedX > 0) {
+                this.speedX = Math.min(this.speedX + dx, MAX_SPEED);
             } else {
-                speed_x = Math.max(speed_x + dx, -MAX_SPEED);
+                this.speedX = Math.max(this.speedX + dx, -MAX_SPEED);
             }
             // y component
-            dy = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
-            if (speed_y > 0) {
-                speed_y = Math.min(speed_y + dy, MAX_SPEED);
+            const dy = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
+            if (this.speedY > 0) {
+                this.speedY = Math.min(this.speedY + dy, MAX_SPEED);
             } else {
-                speed_y = Math.max(speed_y + dy, -MAX_SPEED);
+                this.speedY = Math.max(this.speedY + dy, -MAX_SPEED);
             }
 
-            this.speedX = speed_x;
-            this.speedY = speed_y;
+            // this.speedX = speed_x;
+            // this.speedY = speed_y;
 
 
         }
 
         // update canvas coordinates
         // About to overlap...
-        if (isOverlappingXY(this.xCoord, speedX, SCREEN_WIDTH, CANVAS_WIDTH) == true) {
+        if (isOverlappingXY(this.xCoord, this.speedX, SCREEN_WIDTH, CANVAS_WIDTH) == true) {
             this.speedX = -this.speedX;
         }
-        if (isOverlappingXY(this.yCoord, speedY, SCREEN_HEIGHT, CANVAS_HEIGHT) == true) {
+        if (isOverlappingXY(this.yCoord, this.speedY, SCREEN_HEIGHT, CANVAS_HEIGHT) == true) {
             this.speedY = -this.speedY;
         }
         this.xCoord = this.xCoord + this.speedX;

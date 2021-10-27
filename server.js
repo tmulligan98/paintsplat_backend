@@ -39,11 +39,13 @@ io.on('connection', socket => {
     socket.on(Constants.MSG_TYPES.HOST_GAME, createLobby);
     // Start the game.
     socket.on(Constants.MSG_TYPES.START_GAME, () => {
-        const msg = Constants.RESPONSE_BODY;
-        msg["message"] = "Game commencing.";
-        msg["time"] = Date.now();
-        io.emit(Constants.MSG_TYPES.START_GAME, msg);
         game = lobby.startGame(socket.id);
+        if (game !== null) {
+            const msg = Constants.RESPONSE_BODY;
+            msg["message"] = "Game commencing.";
+            msg["time"] = Date.now();
+            io.emit(Constants.MSG_TYPES.START_GAME, msg);
+        }
     });
 
 })
