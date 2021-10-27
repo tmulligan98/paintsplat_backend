@@ -92,6 +92,8 @@ function onDisconnect() {   // Allow for someone to leave a game
         console.log("Player leaving:", username);
         // Broadcast that a given player left
         io.emit(Constants.MSG_TYPES.LEAVE_GAME, username)
+        // Send updated player list
+        io.emit("player_list", parsers.generatePlayerListBody(lobby.playerUsernames))
     } catch (error) {
         console.log("Player Left (Unknown)")
     }
