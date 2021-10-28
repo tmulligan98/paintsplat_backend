@@ -14,7 +14,7 @@ class Player {
     }
 
 
-    update(splat_confirmation, dt, splat_fired) {
+    update(dt) {
 
         // Player has to be able to fire again after cooldown
 

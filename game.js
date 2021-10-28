@@ -35,25 +35,37 @@ class Game {
     // handleInput
     handleInput(socket, input) {
 
+        var splat_status = "";
+
         if (this.players[socket.id].fireCooldown === 0) {
             if (validSplat(input["x_coord"], input["y_coord"], this.canvas)) {
 
+                // Translate to coordinates with respect to the canvas
+                // Get x and y distance from canvas to splat point
+                const splat_x_canvas = input["x_coord"] - this.canvas.xCoord;
+                const splat_y_canvas = input["y_coord"] - this.canvas.yCoord;
+
                 // Initialise a splat object
-                const splat = new Splat(input['x_coord'], input['y_coord'], this.players[socket.id]);
+                const splat = new Splat(splat_x_canvas, splat_y_canvas, this.players[socket.id]);
 
                 //add splat to the list
                 this.canvas.splats.push(splat)
-                console.log('Your splat is valid and has been recorded')
+                console.log('Valid splat.')
+
 
                 this.players[socket.id].score += 1;
+                splat_status = "hit";
                 //this.update(socket.id)
             }
             else {
                 console.log("you missed");
+                splat_status = "miss";
             }
+        } else {
+            console.log(this.players[socket.id].username + " is still cooling down.")
         }
 
-
+        socket.emit("splat_confirmation", { "username": this.players[socket.id], "splat": splat_status })
         // Player Cooldown
         this.players[socket.id].fireCooldown = Constants.PLAYER_FIRE_COOLDOWN;
 
@@ -80,11 +92,11 @@ class Game {
         var arrayLength = this.canvas.splats.length;
         for (var i = 0; i < arrayLength; i++) {
             listOfSplats.push({ // For loop error, not iterating through splats.
-              "splat_x": this.canvas.splats[i].xCoord,
-              "splat_y": this.canvas.splats[i].yCoord,
-              "player_ID": this.canvas.splats[i].player.id,
-              "colour": this.canvas.splats[i].player.colour,
-          })
+                "splat_x": this.canvas.splats[i].xCoord,
+                "splat_y": this.canvas.splats[i].yCoord,
+                "player_ID": this.canvas.splats[i].player.id,
+                "colour": this.canvas.splats[i].player.colour,
+            })
         }
 
         // for (let spl in this.canvas.splats) {
@@ -122,6 +134,7 @@ class Game {
             Object.keys(this.sockets).forEach(playerID => {
                 const socket = this.sockets[playerID];
                 // const player = this.players[playerID];
+                this.players[playerID].update(dt)
                 console.log(this.createUpdate(this.canvas, leaderboard))
                 socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(this.canvas, leaderboard));
             });
@@ -138,6 +151,22 @@ class Game {
 // NOTE: Once a splat is valid, it needs to be added to the Canvas's list of splats!
 // Given a new splat, check if the new splat is valid
 function validSplat(xCoord, yCoord, CanvasObject) {
+
+    // Check if splat outside x boundary
+    if ((xCoord - Constants.SPLAT_RADIUS) <= CanvasObject.xCoord ||
+        (xCoord + Constants.SPLAT_RADIUS) >= CanvasObject.xCoord + Constants.CANVAS_WIDTH) {    // Within x boundary
+
+        return false;
+    }
+
+    // Check if splat outside y boundary
+    if ((yCoord - Constants.SPLAT_RADIUS) <= CanvasObject.yCoord ||
+        (yCoord + Constants.SPLAT_RADIUS) >= CanvasObject.yCoord + Constants.CANVAS_HEIGHT) {    // Within x boundary
+
+        return false;
+    }
+
+    // Check if overlapping other splats on canvas
     let a = 0.0
     let b = 0.0
     for (let spl in CanvasObject.splats) {
