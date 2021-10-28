@@ -8,6 +8,18 @@ const Canvas = require('./canvas');
 const Constants = require('./constants');
 
 
+function gameEnd(sockets, players) {
+    // get Winner
+    const topPlayer = Object.values(players).sort((player1, player2) => player2.score - player1.score)
+    const msg = { "winner": topPlayer[0] }
+    // Tell all players who the winner is, then kick em.
+    for (const [key, val] of Object.entries(sockets)) {
+        val.emit(Constants.MSG_TYPES.GAME_END, msg)
+        val.disconnect(true)
+    }
+}
+
+
 class Game {
     constructor(sockets, players) {
         this.sockets = sockets;
@@ -16,7 +28,8 @@ class Game {
         this.shouldSendUpdate = false;
         this.canvas = new Canvas()
         this.scores = {}
-        setInterval(this.update.bind(this), 1000 /*/ 60*/);
+        this.gameStartTime = Date.now();
+        this.intervalId = setInterval(this.update.bind(this), 1000 /*/ 60*/);
     }
 
     // handleInput
@@ -50,7 +63,7 @@ class Game {
         return Object.values(this.players)
             .sort((player1, player2) => player2.score - player1.score)
             .slice(0, 5)
-            .map(player => ({ uName: player.uName, score: Math.round(player.score) }));
+            .map(player => ({ username: player.username, score: Math.round(player.score) }));
     }
 
     // Create json object
@@ -81,7 +94,17 @@ class Game {
     // update
     update(/*id*/) {
 
-        this.canvas.update();
+        const now = Date.now();
+        if ((now / 1000 - this.gameStartTime / 1000) > 60) {
+            gameEnd(this.sockets, this.players);
+            // End the game
+            clearInterval(this.intervalId);
+
+        }
+        const dt = (now - this.lastUpdateTime) / 1000;
+        this.lastUpdateTime = now;
+
+        this.canvas.update(dt);
 
         if (this.shouldSendUpdate) {
             const leaderboard = this.getLeaderboard();
@@ -119,4 +142,6 @@ function validSplat(xCoord, yCoord, CanvasObject) {
     return true;
 
 }
+
+
 module.exports = Game;
