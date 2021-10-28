@@ -76,14 +76,25 @@ class Game {
         }
 
         var listOfSplats = [] // temporary array
-        for (let spl in this.canvas.splats) {
+
+        var arrayLength = this.canvas.splats.length;
+        for (var i = 0; i < arrayLength; i++) {
             listOfSplats.push({ // For loop error, not iterating through splats.
-                "splat_x": spl.xCoord,
-                "splat_y": spl.yCoord,
-                "player_ID": spl.player.id, // Bug here
-                "colour": spl.player.colour,
-            })
+              "splat_x": this.canvas.splats[i].xCoord,
+              "splat_y": this.canvas.splats[i].yCoord,
+              "player_ID": this.canvas.splats[i].player.id,
+              "colour": this.canvas.splats[i].player.colour,
+          })
         }
+
+        // for (let spl in this.canvas.splats) {
+        //     listOfSplats.push({ // For loop error, not iterating through splats.
+        //         "splat_x": spl.xCoord,
+        //         "splat_y": spl.yCoord,
+        //         "player_ID": spl.player.id, // Bug here
+        //         "colour": spl.player.colour,
+        //     })
+        // }
         json_object['splat'] = listOfSplats
 
         return json_object
