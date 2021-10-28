@@ -39,11 +39,13 @@ io.on('connection', socket => {
     socket.on(Constants.MSG_TYPES.HOST_GAME, createLobby);
     // Start the game.
     socket.on(Constants.MSG_TYPES.START_GAME, () => {
-        const msg = Constants.RESPONSE_BODY;
-        msg["message"] = "Game commencing.";
-        msg["time"] = Date.now();
-        io.emit(Constants.MSG_TYPES.START_GAME, msg);
         game = lobby.startGame(socket.id);
+        if (game !== null) {
+            const msg = Constants.RESPONSE_BODY;
+            msg["message"] = "Game commencing.";
+            msg["time"] = Date.now();
+            io.emit(Constants.MSG_TYPES.START_GAME, msg);
+        }
     });
 
 })
@@ -70,7 +72,7 @@ function joinLobby(message) {  // Allow a socket connection to join the lobby.
     // Otherwise...
     lobby.addPlayer(this, username, clrs[lobby.playerUsernames.length - 1])
     // Let em know
-    this.emit("welcome")
+    this.emit("lobby_id", lobby.lobbyId)
     // Announce new player
     console.log(parsers.generatePlayerListBody(lobby.playerUsernames))
     io.emit("player_list", parsers.generatePlayerListBody(lobby.playerUsernames))

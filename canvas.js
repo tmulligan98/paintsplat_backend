@@ -1,10 +1,10 @@
-const { MAX_SPEED, MAX_ACCELERATION, SCREEN_LENGTH, SCREEN_WIDTH } = require('./constants');
+const { MAX_SPEED, MAX_ACCELERATION, SCREEN_HEIGHT, SCREEN_WIDTH, CANVAS_HEIGHT, CANVAS_WIDTH } = require('./constants');
 const Constants = require('./constants');
 
 // Accepts either x or y coordinate and speed to determine if overlapping on that axis
 function isOverlappingXY(coord, speed, screenDimension, canvasDimension) {
     if (coord + speed < 0 || coord + speed > screenDimension - canvasDimension) {
-        return True
+        return true
     }
 }
 
@@ -21,28 +21,16 @@ class Canvas {
         // This will be an array of splat objects
         this.splats = []
         // Last x and y changes for the canvas
-        this.dx = 0.0
-        this.dy = 0.0
+        // this.dx = 0.0
+        // this.dy = 0.0
 
         // Speed
         this.speedX = 0.0;
         this.speedY = 0.0;
+
     }
 
-    // add splats to the canvas for every user input
-    //need to confirm
-    // addSplats(splat) {
-    //     if (this.validSplat(splat)) {
-    //         this.splats.push(splat);
-    //         return True
-    //     }
-    //     else {
-    //         console.log('You missed your splat');
-    //         return False
-    //     }
-    // }
-
-    update(dt, splat) {
+    update(dt, /*splat*/) {
 
         this.timeElapsed += dt;
 
@@ -60,33 +48,32 @@ class Canvas {
         if (this.timeElapsed > 0.5) {
             this.timeElapsed = 0;
 
-            // x component
             const dx = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
             if (this.speedX > 0) {
-                this.speedX = Math.min(speedX + dx, MAX_SPEED);
+                this.speedX = Math.min(this.speedX + dx, MAX_SPEED);
             } else {
-                speedX = Math.max(speedX + dx, MAX_SPEED);
+                this.speedX = Math.max(this.speedX + dx, -MAX_SPEED);
             }
             // y component
-            dy = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
-            if (speedY > 0) {
-                speedX = Math.min(speedY + dy, MAX_SPEED);
+            const dy = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
+            if (this.speedY > 0) {
+                this.speedY = Math.min(this.speedY + dy, MAX_SPEED);
             } else {
-                speedY = Math.max(speedX + dy, MAX_SPEED);
+                this.speedY = Math.max(this.speedY + dy, -MAX_SPEED);
             }
 
-            this.speedX = speedX;
-            this.speedY = speedY;
+            // this.speedX = speed_x;
+            // this.speedY = speed_y;
 
 
         }
 
         // update canvas coordinates
         // About to overlap...
-        if (isOverlappingXY(this.xCoord, speedX, SCREEN_WIDTH, CANVAS_WIDTH) == true) {
+        if (isOverlappingXY(this.xCoord, this.speedX, SCREEN_WIDTH, CANVAS_WIDTH) == true) {
             this.speedX = -this.speedX;
         }
-        if (isOverlappingXY(this.yCoord, speedY, SCREEN_HEIGHT, CANVAS_HEIGHT) == true) {
+        if (isOverlappingXY(this.yCoord, this.speedY, SCREEN_HEIGHT, CANVAS_HEIGHT) == true) {
             this.speedY = -this.speedY;
         }
         this.xCoord = this.xCoord + this.speedX;
