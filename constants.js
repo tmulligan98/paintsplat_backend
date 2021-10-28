@@ -6,7 +6,7 @@ module.exports = Object.freeze({
     PLAYER_FIRE_COOLDOWN: 2.0,
     SPLAT_RADIUS: 5.0,
     SCREEN_HEIGHT: 200,
-    SCREEN_WIDTH: 200,
+    SCREEN_WIDTH: 360,
     CANVAS_HEIGHT: 80,
     CANVAS_WIDTH: 80,
     MAX_ACCELERATION: 3,
@@ -20,6 +20,7 @@ module.exports = Object.freeze({
         HOST_GAME: "host_game",
         INPUT: 'input',
         GAME_UPDATE: 'update_game',
+        GAME_END: "game_end"
     },
     RESPONSE_BODY: {
         "message": "",
