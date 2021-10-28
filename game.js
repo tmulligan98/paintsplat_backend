@@ -76,7 +76,7 @@ class Game {
         }
 
         var listOfSplats = [] // temporary array
-        for (spl in this.canvas.splats) {
+        for (let spl in this.canvas.splats) {
             listOfSplats.push({
                 "splat_x": spl.xCoord,
                 "splat_y": spl.yCoord,
@@ -129,10 +129,10 @@ class Game {
 function validSplat(xCoord, yCoord, CanvasObject) {
     let a = 0.0
     let b = 0.0
-    for (spl in CanvasObject.splats) {
+    for (let spl in CanvasObject.splats) {
         //c = sqrt(a^2 + b^2)
-        a = abs(xCoord - splat.xCoord);
-        b = abs(yCoord - splat.yCoord);
+        a = abs(xCoord - spl.xCoord);
+        b = abs(yCoord - spl.yCoord);
         c = sqrt(a ** 2 + b ** 2);
         if (c < 2 * Constants.SPLAT_RADIUS) {
             return false;

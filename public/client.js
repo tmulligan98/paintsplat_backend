@@ -32,7 +32,11 @@ function replDemo() {
                 console.log('Start')
                 socket.emit("start_game")
                 socket.on("start_game", messageInput)
-            } else {
+            } else if (line === "4") {
+                console.log('Start')
+                socket.emit("input")
+                socket.on("input", {'xCoord': 10, 'yCoord': 10})
+            }else {
                 console.log(`unknown command: "${line}"`)
             }
             rl.prompt()
