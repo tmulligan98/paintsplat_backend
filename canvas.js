@@ -17,7 +17,7 @@ class Canvas {
         this.height = 0.0;
         this.timeElapsed = 0.0;
 
-        // Origin (0,0) of canvas is bottom left
+        // Origin (0,0) of canvas is top left
         // This will be an array of splat objects
         this.splats = []
         // Last x and y changes for the canvas
