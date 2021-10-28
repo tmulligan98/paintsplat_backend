@@ -50,7 +50,7 @@ class Game {
 
                 //add splat to the list
                 this.canvas.splats.push(splat)
-                console.log('Valid splat.')
+                //console.log('Valid splat.')
 
 
                 this.players[socket.id].score += 1;
@@ -58,14 +58,17 @@ class Game {
                 //this.update(socket.id)
             }
             else {
-                console.log("you missed");
+                //console.log("you missed");
                 splat_status = "miss";
             }
         } else {
             console.log(this.players[socket.id].username + " is still cooling down.")
+            splat_status = "cooldown";
         }
 
+
         socket.emit("splat_confirmation", { "username": this.players[socket.id], "splat": splat_status })
+        console.log(splat_status)
         // Player Cooldown
         this.players[socket.id].fireCooldown = Constants.PLAYER_FIRE_COOLDOWN;
 
@@ -169,12 +172,13 @@ function validSplat(xCoord, yCoord, CanvasObject) {
     // Check if overlapping other splats on canvas
     let a = 0.0
     let b = 0.0
-    for (let spl in CanvasObject.splats) {
+    for (var i = 0; i < CanvasObject.splats.length; i++) {
         //c = sqrt(a^2 + b^2)
-        a = abs(xCoord - spl.xCoord);
-        b = abs(yCoord - spl.yCoord);
-        c = sqrt(a ** 2 + b ** 2);
+        a = Math.abs(xCoord - CanvasObject.splats[i].xCoord);
+        b = Math.abs(yCoord - CanvasObject.splats[i].yCoord);
+        c = Math.sqrt(a ** 2 + b ** 2);
         if (c < 2 * Constants.SPLAT_RADIUS) {
+            console.log("Splat overlaps another splat")
             return false;
         }
 

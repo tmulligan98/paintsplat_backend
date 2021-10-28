@@ -1,7 +1,7 @@
 const socketio = require("socket.io-client");
 const CREATE_MSG = { "username": "Player1" }
 const JOIN_MSG = { "username": "Player2", "LobbyId": "AAAAA" }
-const SPLAT_A = { 'x_coord': 10, 'y_coord': 10 }
+const SPLAT_A = { 'x_coord': 100, 'y_coord': 40 }
 const SPLAT_B = { 'x_coord': 30, 'y_coord': 30 }
 
 const socket = socketio.connect("http://localhost:3000");

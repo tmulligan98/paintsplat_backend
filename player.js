@@ -30,6 +30,9 @@ class Player {
         if (this.fireCooldown > 0) {
             this.fireCooldown -= dt;
         }
+        if (this.fireCooldown < 0) {
+            this.fireCooldown = 0;
+        }
 
     }
 
