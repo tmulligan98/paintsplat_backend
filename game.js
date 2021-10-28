@@ -8,6 +8,15 @@ const Canvas = require('./canvas');
 const Constants = require('./constants');
 
 
+function gameEnd(sockets) {
+
+    for (const [key, val] of Object.entries(sockets)) {
+        val.emit(Constants.MSG_TYPES.GAME_END)
+        val.disconnect(true)
+    }
+}
+
+
 class Game {
     constructor(sockets, players) {
         this.sockets = sockets;
@@ -16,7 +25,8 @@ class Game {
         this.shouldSendUpdate = false;
         this.canvas = new Canvas()
         this.scores = {}
-        setInterval(this.update.bind(this), 1000 /*/ 60*/);
+        this.gameStartTime = Date.now();
+        this.intervalId = setInterval(this.update.bind(this), 1000 /*/ 60*/);
     }
 
     // handleInput
@@ -50,7 +60,7 @@ class Game {
         return Object.values(this.players)
             .sort((player1, player2) => player2.score - player1.score)
             .slice(0, 5)
-            .map(player => ({ uName: player.uName, score: Math.round(player.score) }));
+            .map(player => ({ username: player.username, score: Math.round(player.score) }));
     }
 
     // Create json object
@@ -82,6 +92,12 @@ class Game {
     update(/*id*/) {
 
         const now = Date.now();
+        if ((now / 1000 - this.gameStartTime / 1000) > 10) {
+            gameEnd(this.sockets);
+            // End the game
+            clearInterval(this.intervalId);
+
+        }
         const dt = (now - this.lastUpdateTime) / 1000;
         this.lastUpdateTime = now;
 
@@ -123,4 +139,6 @@ function validSplat(xCoord, yCoord, CanvasObject) {
     return true;
 
 }
+
+
 module.exports = Game;
