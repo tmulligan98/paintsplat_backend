@@ -77,10 +77,10 @@ class Game {
 
         var listOfSplats = [] // temporary array
         for (let spl in this.canvas.splats) {
-            listOfSplats.push({
+            listOfSplats.push({ // For loop error, not iterating through splats.
                 "splat_x": spl.xCoord,
                 "splat_y": spl.yCoord,
-                "player_ID": spl.player.id,
+                "player_ID": spl.player.id, // Bug here
                 "colour": spl.player.colour,
             })
         }
