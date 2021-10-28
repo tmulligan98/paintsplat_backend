@@ -92,7 +92,7 @@ class Game {
     update(/*id*/) {
 
         const now = Date.now();
-        if ((now / 1000 - this.gameStartTime / 1000) > 10) {
+        if ((now / 1000 - this.gameStartTime / 1000) > 60) {
             gameEnd(this.sockets);
             // End the game
             clearInterval(this.intervalId);
