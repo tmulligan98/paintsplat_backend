@@ -1,6 +1,7 @@
 const socketio = require("socket.io-client");
 const CREATE_MSG = { "username": "Player1" }
 const JOIN_MSG = { "username": "Player2", "LobbyId": "AAAAA" }
+const SPLAT = { 'x_coord': 10, 'y_coord': 10 }
 
 const socket = socketio.connect("http://localhost:3000");
 //const socket = socketio.connect("https://pure-meadow-74449.herokuapp.com");
@@ -32,6 +33,9 @@ function replDemo() {
                 console.log('Start')
                 socket.emit("start_game")
                 socket.on("start_game", messageInput)
+            } else if (line === "4") {
+                console.log('Start')
+                socket.emit("input", SPLAT)
             } else {
                 console.log(`unknown command: "${line}"`)
             }

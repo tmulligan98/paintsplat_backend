@@ -76,14 +76,25 @@ class Game {
         }
 
         var listOfSplats = [] // temporary array
-        for (spl in this.canvas.splats) {
-            listOfSplats.push({
-                "splat_x": spl.xCoord,
-                "splat_y": spl.yCoord,
-                "player_ID": spl.player.id,
-                "colour": spl.player.colour,
-            })
+
+        var arrayLength = this.canvas.splats.length;
+        for (var i = 0; i < arrayLength; i++) {
+            listOfSplats.push({ // For loop error, not iterating through splats.
+              "splat_x": this.canvas.splats[i].xCoord,
+              "splat_y": this.canvas.splats[i].yCoord,
+              "player_ID": this.canvas.splats[i].player.id,
+              "colour": this.canvas.splats[i].player.colour,
+          })
         }
+
+        // for (let spl in this.canvas.splats) {
+        //     listOfSplats.push({ // For loop error, not iterating through splats.
+        //         "splat_x": spl.xCoord,
+        //         "splat_y": spl.yCoord,
+        //         "player_ID": spl.player.id, // Bug here
+        //         "colour": spl.player.colour,
+        //     })
+        // }
         json_object['splat'] = listOfSplats
 
         return json_object
@@ -129,10 +140,10 @@ class Game {
 function validSplat(xCoord, yCoord, CanvasObject) {
     let a = 0.0
     let b = 0.0
-    for (spl in CanvasObject.splats) {
+    for (let spl in CanvasObject.splats) {
         //c = sqrt(a^2 + b^2)
-        a = abs(xCoord - splat.xCoord);
-        b = abs(yCoord - splat.yCoord);
+        a = abs(xCoord - spl.xCoord);
+        b = abs(yCoord - spl.yCoord);
         c = sqrt(a ** 2 + b ** 2);
         if (c < 2 * Constants.SPLAT_RADIUS) {
             return false;
