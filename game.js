@@ -8,10 +8,13 @@ const Canvas = require('./canvas');
 const Constants = require('./constants');
 
 
-function gameEnd(sockets) {
-
+function gameEnd(sockets, players) {
+    // get Winner
+    const topPlayer = Object.values(players).sort((player1, player2) => player2.score - player1.score)
+    const msg = { "winner": topPlayer[0] }
+    // Tell all players who the winner is, then kick em.
     for (const [key, val] of Object.entries(sockets)) {
-        val.emit(Constants.MSG_TYPES.GAME_END)
+        val.emit(Constants.MSG_TYPES.GAME_END, msg)
         val.disconnect(true)
     }
 }
@@ -92,8 +95,8 @@ class Game {
     update(/*id*/) {
 
         const now = Date.now();
-        if ((now / 1000 - this.gameStartTime / 1000) > 60) {
-            gameEnd(this.sockets);
+        if ((now / 1000 - this.gameStartTime / 1000) > 10) {
+            gameEnd(this.sockets, this.players);
             // End the game
             clearInterval(this.intervalId);
 
