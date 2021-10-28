@@ -36,10 +36,10 @@ class Game {
     handleInput(socket, input) {
 
         if (this.players[socket.id].fireCooldown === 0) {
-            if (validSplat(input["xCoord"], input["yCoord"], this.canvas)) {
+            if (validSplat(input["x_coord"], input["y_coord"], this.canvas)) {
 
                 // Initialise a splat object
-                const splat = new Splat(input['xCoord'], input['yCoord'], this.players[socket.id]);
+                const splat = new Splat(input['x_coord'], input['y_coord'], this.players[socket.id]);
 
                 //add splat to the list
                 this.canvas.splats.push(splat)
