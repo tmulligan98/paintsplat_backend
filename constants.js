@@ -9,8 +9,8 @@ module.exports = Object.freeze({
     SCREEN_WIDTH: 400,
     CANVAS_HEIGHT: 220,
     CANVAS_WIDTH: 220,
-    MAX_ACCELERATION: 3,
-    MAX_SPEED: 20,
+    MAX_ACCELERATION: 1.5,
+    MAX_SPEED: 5,
     LOBBY_ID_SIZE: 6,
     MAX_PLAYER: 2,
     MSG_TYPES: {
