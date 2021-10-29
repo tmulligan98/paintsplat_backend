@@ -141,7 +141,7 @@ class Game {
                 const socket = this.sockets[playerID];
                 // const player = this.players[playerID];
                 this.players[playerID].update(dt)
-                console.log(this.createUpdate(this.canvas, leaderboard))
+                //console.log(this.createUpdate(this.canvas, leaderboard))
                 socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(this.canvas, leaderboard));
             });
             this.shouldSendUpdate = false;
