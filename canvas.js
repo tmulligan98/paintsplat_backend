@@ -22,7 +22,7 @@ class Canvas {
         this.splats = []
         // Last x and y changes for the canvas
         this.maxSpeed = MAX_SPEED * level;
-        this.maxAcceleration = MAX_ACCELERATION * level;
+        this.maxAcceleration = MAX_ACCELERATION;
 
         // Speed
         this.speedX = 0.0;
