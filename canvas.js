@@ -45,7 +45,7 @@ class Canvas {
     moveBoard() {
 
         // Change the canvas direction
-        if (this.timeElapsed > 0.5) {
+        if (this.timeElapsed > 0.8) {
             this.timeElapsed = 0;
 
             const dx = ((Math.random() - 0.5) * this.maxAcceleration * 2);
