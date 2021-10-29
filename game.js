@@ -172,8 +172,8 @@ function validSplat(xCoord, yCoord, CanvasObject) {
         return false;
     }
 
-    const splat_x_canvas = xCoord - this.canvas.xCoord;
-    const splat_y_canvas = yCoord - this.canvas.yCoord;
+    const splat_x_canvas = xCoord - CanvasObject.xCoord;
+    const splat_y_canvas = yCoord - CanvasObject.yCoord;
 
     // Check if overlapping other splats on canvas
     let a = 0.0
