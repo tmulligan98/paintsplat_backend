@@ -30,7 +30,7 @@ class Game {
         this.canvas = new Canvas(level)
         this.scores = {}
         this.gameStartTime = Date.now();
-        this.intervalId = setInterval(this.update.bind(this), 1000 / 60);
+        this.intervalId = setInterval(this.update.bind(this), 1000 / 120);
     }
 
     // handleInput
