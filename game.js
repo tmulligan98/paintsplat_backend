@@ -21,12 +21,13 @@ function gameEnd(sockets, players) {
 
 
 class Game {
-    constructor(sockets, players) {
+    constructor(sockets, players, level) {
         this.sockets = sockets;
         this.players = players;
         this.lastUpdateTime = Date.now();
         this.shouldSendUpdate = false;
-        this.canvas = new Canvas()
+        this.level = level;
+        this.canvas = new Canvas(level)
         this.scores = {}
         this.gameStartTime = Date.now();
         this.intervalId = setInterval(this.update.bind(this), 1000 /*/ 60*/);

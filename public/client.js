@@ -32,7 +32,7 @@ function replDemo() {
                 socket.on("player_list", messageInput)
             } else if (line === "3") {
                 console.log('Start')
-                socket.emit("start_game")
+                socket.emit("start_game", { "level": 3 })
                 socket.on("start_game", messageInput)
             } else if (line === "4") {
                 socket.emit("input", SPLAT_A)

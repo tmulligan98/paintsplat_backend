@@ -9,7 +9,7 @@ function isOverlappingXY(coord, speed, screenDimension, canvasDimension) {
 }
 
 class Canvas {
-    constructor() {
+    constructor(level) {
         // Initial coords wrt to screen
         this.xCoord = 0.0;
         this.yCoord = 0.0;
@@ -21,8 +21,8 @@ class Canvas {
         // This will be an array of splat objects
         this.splats = []
         // Last x and y changes for the canvas
-        // this.dx = 0.0
-        // this.dy = 0.0
+        this.maxSpeed = MAX_SPEED * level;
+        this.maxAcceleration = MAX_ACCELERATION * level;
 
         // Speed
         this.speedX = 0.0;
@@ -48,18 +48,18 @@ class Canvas {
         if (this.timeElapsed > 0.5) {
             this.timeElapsed = 0;
 
-            const dx = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
+            const dx = ((Math.random() - 0.5) * this.maxAcceleration * 2);
             if (this.speedX > 0) {
-                this.speedX = Math.min(this.speedX + dx, MAX_SPEED);
+                this.speedX = Math.min(this.speedX + dx, this.maxSpeed);
             } else {
-                this.speedX = Math.max(this.speedX + dx, -MAX_SPEED);
+                this.speedX = Math.max(this.speedX + dx, -this.maxSpeed);
             }
             // y component
-            const dy = ((Math.random() - 0.5) * MAX_ACCELERATION * 2);
+            const dy = ((Math.random() - 0.5) * this.maxAcceleration * 2);
             if (this.speedY > 0) {
-                this.speedY = Math.min(this.speedY + dy, MAX_SPEED);
+                this.speedY = Math.min(this.speedY + dy, this.maxSpeed);
             } else {
-                this.speedY = Math.max(this.speedY + dy, -MAX_SPEED);
+                this.speedY = Math.max(this.speedY + dy, -this.maxSpeed);
             }
 
             // this.speedX = speed_x;

@@ -38,8 +38,9 @@ io.on('connection', socket => {
     // Create a lobby.
     socket.on(Constants.MSG_TYPES.HOST_GAME, createLobby);
     // Start the game.
-    socket.on(Constants.MSG_TYPES.START_GAME, () => {
-        game = lobby.startGame(socket.id);
+    socket.on(Constants.MSG_TYPES.START_GAME, (messageBody) => {
+        const level = messageBody["level"];
+        game = lobby.startGame(socket.id, level);
         if (game !== null) {
             const msg = Constants.RESPONSE_BODY;
             msg["message"] = "Game commencing.";

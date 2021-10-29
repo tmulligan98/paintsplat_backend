@@ -78,7 +78,7 @@ class Lobby {
         // socket.emit("players: ", this.playerUsernames);
     }
 
-    startGame(playerId) {   // Commence the game. This should return the game object to where it is called (server.js)
+    startGame(playerId, level) {   // Commence the game. This should return the game object to where it is called (server.js)
         // Check that the person issuing the command is the host
         if (playerId !== this.hostId) {
             const msg = Constants.ERROR_MESSAGE_BODY;
@@ -90,7 +90,7 @@ class Lobby {
         }
 
         // Populate the game.
-        const game = new Game(this.sockets, this.players);
+        const game = new Game(this.sockets, this.players, level);
 
         // Return game object, populated with players.
         return game;
