@@ -4,7 +4,7 @@
 module.exports = Object.freeze({
 
     PLAYER_FIRE_COOLDOWN: 2.0,
-    SPLAT_RADIUS: 20.0,
+    SPLAT_RADIUS: 40.0,
     SCREEN_HEIGHT: 500,
     SCREEN_WIDTH: 400,
     CANVAS_HEIGHT: 220,
