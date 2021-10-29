@@ -180,7 +180,7 @@ function validSplat(xCoord, yCoord, CanvasObject) {
         a = Math.abs(xCoord - CanvasObject.splats[i].xCoord);
         b = Math.abs(yCoord - CanvasObject.splats[i].yCoord);
         c = Math.sqrt((a ** 2) + (b ** 2));
-        if (c > (2 * Constants.SPLAT_RADIUS)) {
+        if (c < (3 * Constants.SPLAT_RADIUS)) {
             console.log("Splat overlaps another splat")
             return false;
         }
