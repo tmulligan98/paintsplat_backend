@@ -38,6 +38,7 @@ class Game {
         var splat_status = "";
 
         if (this.players[socket.id].fireCooldown === 0) {
+
             if (validSplat(input["x_coord"], input["y_coord"], this.canvas)) {
 
                 // Translate to coordinates with respect to the canvas
@@ -60,6 +61,8 @@ class Game {
             else {
                 //console.log("you missed");
                 splat_status = "miss";
+                // Player Cooldown
+                this.players[socket.id].fireCooldown = Constants.PLAYER_FIRE_COOLDOWN;
             }
         } else {
             console.log(this.players[socket.id].username + " is still cooling down.")
@@ -69,8 +72,7 @@ class Game {
 
         socket.emit("splat_confirmation", { "username": this.players[socket.id], "splat": splat_status })
         console.log(splat_status)
-        // Player Cooldown
-        this.players[socket.id].fireCooldown = Constants.PLAYER_FIRE_COOLDOWN;
+
 
     }
 
@@ -176,8 +178,8 @@ function validSplat(xCoord, yCoord, CanvasObject) {
         //c = sqrt(a^2 + b^2)
         a = Math.abs(xCoord - CanvasObject.splats[i].xCoord);
         b = Math.abs(yCoord - CanvasObject.splats[i].yCoord);
-        c = Math.sqrt(a ** 2 + b ** 2);
-        if (c < 2 * Constants.SPLAT_RADIUS) {
+        c = Math.sqrt((a ** 2) + (b ** 2));
+        if (c < (2 * Constants.SPLAT_RADIUS)) {
             console.log("Splat overlaps another splat")
             return false;
         }
