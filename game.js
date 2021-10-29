@@ -172,13 +172,16 @@ function validSplat(xCoord, yCoord, CanvasObject) {
         return false;
     }
 
+    const splat_x_canvas = x_coord - this.canvas.xCoord;
+    const splat_y_canvas = y_coord - this.canvas.yCoord;
+
     // Check if overlapping other splats on canvas
     let a = 0.0
     let b = 0.0
     for (var i = 0; i < CanvasObject.splats.length; i++) {
         //c = sqrt(a^2 + b^2)
-        a = Math.abs(xCoord - CanvasObject.splats[i].xCoord);
-        b = Math.abs(yCoord - CanvasObject.splats[i].yCoord);
+        a = Math.abs(splat_x_canvas - CanvasObject.splats[i].xCoord);
+        b = Math.abs(splat_y_canvas - CanvasObject.splats[i].yCoord);
         c = Math.sqrt((a ** 2) + (b ** 2));
         if (c < (2 * Constants.SPLAT_RADIUS)) {
             console.log("Splat overlaps another splat")
