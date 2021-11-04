@@ -21,7 +21,10 @@ class Canvas {
         // This will be an array of splat objects
         this.splats = []
         // Last x and y changes for the canvas
-        this.maxSpeed = MAX_SPEED * level;
+        if (level <= 3) {
+            this.maxSpeed = MAX_SPEED * level;
+        }
+        else this.maxSpeed = MAX_SPEED * (3 + ((level - 3) * 0.3))
         this.maxAcceleration = MAX_ACCELERATION;
 
         // Speed
